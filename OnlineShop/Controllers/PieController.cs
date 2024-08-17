@@ -40,5 +40,10 @@ namespace OnlineShop.Controllers
             if (pie == null) return NotFound();
             return View(pie);
         }
+
+        public IActionResult Search()
+        {
+            return View();
+        }
     }
 }

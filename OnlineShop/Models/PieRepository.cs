@@ -32,5 +32,10 @@ namespace OnlineShop.Models
         {
             return _onlineShopDbContext.Pies.FirstOrDefault(p => p.PieId == id);
         }
+
+        public IEnumerable<Pie> SearchPies(string searchQuery)
+        {
+            return _onlineShopDbContext.Pies.Where(p => p.Name.Contains(searchQuery));
+        }
     }
 }
