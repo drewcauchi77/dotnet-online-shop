@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Models;
-using OnlineShop.App;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("OnlineShopDbContextConnection") ?? throw new InvalidOperationException("Connection string 'OnlineShopDbContextConnection' not found.");
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IPieRepository, PieRepository>();
@@ -25,6 +26,8 @@ builder.Services.AddDbContext<OnlineShopDbContext>(options =>
         builder.Configuration["ConnectionStrings:OnlineShopDbContextConnection"]);
 });
 
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<OnlineShopDbContext>();
+
 // builder.Services.AddControllers(); // Used for building APIs
 
 // Application instance is ready
@@ -35,6 +38,9 @@ var app = builder.Build();
 app.UseStaticFiles();
 // Support for sessions
 app.UseSession();
+// Authentication
+app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
